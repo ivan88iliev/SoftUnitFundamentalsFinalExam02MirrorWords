@@ -1,0 +1,65 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+namespace SoftUnitFundamentalsFinalExam
+{
+    class Program
+    {
+        private static string casint;
+
+        static void Main(string[] args)
+        {
+            //SoftUnitFundamentalsFinalExam02MirrorWords
+
+            List<string> outputList = new List<string>();
+
+            string text = Console.ReadLine();
+
+            string pattern = @"(@|#)([A-Za-z]{3,})\1\1([A-Za-z]{3,})\1";
+            Regex regextPattern = new Regex(pattern);
+            MatchCollection matches = regextPattern.Matches(text);
+            bool mirror = true;
+            if (matches.Count > 0)
+            {
+                Console.WriteLine($"{matches.Count} word pairs found!");
+                foreach (Match item in matches)
+                {
+                    if (ReverseString(item.Groups[2].ToString()) == item.Groups[3].ToString())
+                    {
+                        if (mirror)
+                        {
+                            Console.WriteLine("The mirror words are:");
+                            mirror = false;
+                        }
+                        string output = item.Groups[2] + " <=> " + item.Groups[3];
+                        outputList.Add(output);
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("No word pairs found!");
+            }
+            if (mirror)
+            {
+                Console.WriteLine("No mirror words!");
+            }
+            Console.WriteLine(String.Join(", ", outputList));
+
+            //
+        }
+        public static string ReverseString(string inputText)
+        {
+            string output = "";
+            for (int i = inputText.Length - 1; i >= 0; i--)
+            {
+                output += inputText[i];
+            }
+            return output;
+        }
+
+    }
+}
